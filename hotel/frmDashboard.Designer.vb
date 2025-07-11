@@ -24,8 +24,10 @@ Partial Class frmDashboard
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.gbRoomStatus = New System.Windows.Forms.GroupBox()
-        Me.lblCleaningValue = New System.Windows.Forms.Label()
+        Me.lblPendingValue = New System.Windows.Forms.Label()
         Me.lblCleaningLabel = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblCleaningValue = New System.Windows.Forms.Label()
         Me.lblOccupiedValue = New System.Windows.Forms.Label()
         Me.lblOccupiedLabel = New System.Windows.Forms.Label()
         Me.lblAvailableValue = New System.Windows.Forms.Label()
@@ -36,8 +38,6 @@ Partial Class frmDashboard
         Me.dgvCheckins = New System.Windows.Forms.DataGridView()
         Me.lblCheckins = New System.Windows.Forms.Label()
         Me.tmrRefresh = New System.Windows.Forms.Timer(Me.components)
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.lblPendingValue = New System.Windows.Forms.Label()
         Me.gbRoomStatus.SuspendLayout()
         Me.gbDailyMovements.SuspendLayout()
         CType(Me.dgvCheckouts, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -61,20 +61,20 @@ Partial Class frmDashboard
         Me.gbRoomStatus.Margin = New System.Windows.Forms.Padding(4)
         Me.gbRoomStatus.Name = "gbRoomStatus"
         Me.gbRoomStatus.Padding = New System.Windows.Forms.Padding(4)
-        Me.gbRoomStatus.Size = New System.Drawing.Size(400, 826)
+        Me.gbRoomStatus.Size = New System.Drawing.Size(400, 805)
         Me.gbRoomStatus.TabIndex = 0
         Me.gbRoomStatus.TabStop = False
         Me.gbRoomStatus.Text = "Room Status"
         '
-        'lblCleaningValue
+        'lblPendingValue
         '
-        Me.lblCleaningValue.AutoSize = True
-        Me.lblCleaningValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCleaningValue.Location = New System.Drawing.Point(199, 150)
-        Me.lblCleaningValue.Name = "lblCleaningValue"
-        Me.lblCleaningValue.Size = New System.Drawing.Size(27, 29)
-        Me.lblCleaningValue.TabIndex = 5
-        Me.lblCleaningValue.Text = "0"
+        Me.lblPendingValue.AutoSize = True
+        Me.lblPendingValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPendingValue.Location = New System.Drawing.Point(199, 115)
+        Me.lblPendingValue.Name = "lblPendingValue"
+        Me.lblPendingValue.Size = New System.Drawing.Size(24, 25)
+        Me.lblPendingValue.TabIndex = 7
+        Me.lblPendingValue.Text = "0"
         '
         'lblCleaningLabel
         '
@@ -82,9 +82,29 @@ Partial Class frmDashboard
         Me.lblCleaningLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCleaningLabel.Location = New System.Drawing.Point(24, 157)
         Me.lblCleaningLabel.Name = "lblCleaningLabel"
-        Me.lblCleaningLabel.Size = New System.Drawing.Size(125, 40)
+        Me.lblCleaningLabel.Size = New System.Drawing.Size(112, 34)
         Me.lblCleaningLabel.TabIndex = 4
         Me.lblCleaningLabel.Text = "Needs Cleaning:" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(24, 122)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(151, 17)
+        Me.Label1.TabIndex = 6
+        Me.Label1.Text = "Pending Reservations:"
+        '
+        'lblCleaningValue
+        '
+        Me.lblCleaningValue.AutoSize = True
+        Me.lblCleaningValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCleaningValue.Location = New System.Drawing.Point(199, 150)
+        Me.lblCleaningValue.Name = "lblCleaningValue"
+        Me.lblCleaningValue.Size = New System.Drawing.Size(24, 25)
+        Me.lblCleaningValue.TabIndex = 5
+        Me.lblCleaningValue.Text = "0"
         '
         'lblOccupiedValue
         '
@@ -92,7 +112,7 @@ Partial Class frmDashboard
         Me.lblOccupiedValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOccupiedValue.Location = New System.Drawing.Point(199, 86)
         Me.lblOccupiedValue.Name = "lblOccupiedValue"
-        Me.lblOccupiedValue.Size = New System.Drawing.Size(27, 29)
+        Me.lblOccupiedValue.Size = New System.Drawing.Size(24, 25)
         Me.lblOccupiedValue.TabIndex = 3
         Me.lblOccupiedValue.Text = "0"
         '
@@ -102,7 +122,7 @@ Partial Class frmDashboard
         Me.lblOccupiedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOccupiedLabel.Location = New System.Drawing.Point(24, 93)
         Me.lblOccupiedLabel.Name = "lblOccupiedLabel"
-        Me.lblOccupiedLabel.Size = New System.Drawing.Size(135, 40)
+        Me.lblOccupiedLabel.Size = New System.Drawing.Size(120, 34)
         Me.lblOccupiedLabel.TabIndex = 2
         Me.lblOccupiedLabel.Text = "Occupied Rooms:" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -112,7 +132,7 @@ Partial Class frmDashboard
         Me.lblAvailableValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAvailableValue.Location = New System.Drawing.Point(199, 52)
         Me.lblAvailableValue.Name = "lblAvailableValue"
-        Me.lblAvailableValue.Size = New System.Drawing.Size(27, 29)
+        Me.lblAvailableValue.Size = New System.Drawing.Size(24, 25)
         Me.lblAvailableValue.TabIndex = 1
         Me.lblAvailableValue.Text = "0"
         '
@@ -122,7 +142,7 @@ Partial Class frmDashboard
         Me.lblAvialableLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAvialableLabel.Location = New System.Drawing.Point(24, 59)
         Me.lblAvialableLabel.Name = "lblAvialableLabel"
-        Me.lblAvialableLabel.Size = New System.Drawing.Size(131, 20)
+        Me.lblAvialableLabel.Size = New System.Drawing.Size(117, 17)
         Me.lblAvialableLabel.TabIndex = 0
         Me.lblAvialableLabel.Text = "Available Rooms:"
         '
@@ -138,7 +158,7 @@ Partial Class frmDashboard
         Me.gbDailyMovements.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbDailyMovements.Location = New System.Drawing.Point(424, 12)
         Me.gbDailyMovements.Name = "gbDailyMovements"
-        Me.gbDailyMovements.Size = New System.Drawing.Size(1446, 826)
+        Me.gbDailyMovements.Size = New System.Drawing.Size(1446, 805)
         Me.gbDailyMovements.TabIndex = 1
         Me.gbDailyMovements.TabStop = False
         Me.gbDailyMovements.Text = "Today's Guest Movements"
@@ -159,7 +179,7 @@ Partial Class frmDashboard
         Me.lblCheckouts.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCheckouts.Location = New System.Drawing.Point(20, 500)
         Me.lblCheckouts.Name = "lblCheckouts"
-        Me.lblCheckouts.Size = New System.Drawing.Size(165, 40)
+        Me.lblCheckouts.Size = New System.Drawing.Size(145, 34)
         Me.lblCheckouts.TabIndex = 8
         Me.lblCheckouts.Text = "Expected Check-outs:" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -179,36 +199,16 @@ Partial Class frmDashboard
         Me.lblCheckins.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCheckins.Location = New System.Drawing.Point(20, 40)
         Me.lblCheckins.Name = "lblCheckins"
-        Me.lblCheckins.Size = New System.Drawing.Size(154, 40)
+        Me.lblCheckins.Size = New System.Drawing.Size(136, 34)
         Me.lblCheckins.TabIndex = 6
         Me.lblCheckins.Text = "Expected Check-ins:" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'tmrRefresh
         '
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(24, 122)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(202, 24)
-        Me.Label1.TabIndex = 6
-        Me.Label1.Text = "Pending Reservations:"
-        '
-        'lblPendingValue
-        '
-        Me.lblPendingValue.AutoSize = True
-        Me.lblPendingValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPendingValue.Location = New System.Drawing.Point(199, 115)
-        Me.lblPendingValue.Name = "lblPendingValue"
-        Me.lblPendingValue.Size = New System.Drawing.Size(27, 29)
-        Me.lblPendingValue.TabIndex = 7
-        Me.lblPendingValue.Text = "0"
-        '
         'frmDashboard
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(15.0!, 29.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(13.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.AutoScrollMinSize = New System.Drawing.Size(1900, 1020)

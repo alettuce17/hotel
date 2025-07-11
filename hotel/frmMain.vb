@@ -92,7 +92,10 @@
     End Sub
 
     ' Note: The click events for the other management menu items will be added here as we build them.
-
+    Private Sub loyaltyTiersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoyaltyTiersToolStripMenuItem.Click
+        Dim frm As New frmLoyaltyTiers()
+        frm.ShowDialog()
+    End Sub
 #End Region
 
 End Class
