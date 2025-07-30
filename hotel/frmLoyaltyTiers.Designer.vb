@@ -25,18 +25,18 @@ Partial Class frmLoyaltyTiers
         Me.dgvTiers = New System.Windows.Forms.DataGridView()
         Me.lblTierName = New System.Windows.Forms.Label()
         Me.txtTierName = New System.Windows.Forms.TextBox()
-        Me.numMinPoints = New System.Windows.Forms.NumericUpDown()
+        Me.numMinNights = New System.Windows.Forms.NumericUpDown()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.txtBenefits = New System.Windows.Forms.TextBox()
-        Me.lblMinPoints = New System.Windows.Forms.Label()
-        Me.lblMaxPoints = New System.Windows.Forms.Label()
-        Me.numMaxPoints = New System.Windows.Forms.NumericUpDown()
+        Me.lblMinNights = New System.Windows.Forms.Label()
         Me.lblBenefits = New System.Windows.Forms.Label()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnAddNew = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.numDiscount = New System.Windows.Forms.NumericUpDown()
         CType(Me.dgvTiers, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numMinPoints, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numMaxPoints, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.numMinNights, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.numDiscount, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'dgvTiers
@@ -54,7 +54,7 @@ Partial Class frmLoyaltyTiers
         Me.lblTierName.AutoSize = True
         Me.lblTierName.Location = New System.Drawing.Point(30, 276)
         Me.lblTierName.Name = "lblTierName"
-        Me.lblTierName.Size = New System.Drawing.Size(102, 48)
+        Me.lblTierName.Size = New System.Drawing.Size(92, 40)
         Me.lblTierName.TabIndex = 1
         Me.lblTierName.Text = "Tier Name:" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -62,15 +62,15 @@ Partial Class frmLoyaltyTiers
         '
         Me.txtTierName.Location = New System.Drawing.Point(14, 300)
         Me.txtTierName.Name = "txtTierName"
-        Me.txtTierName.Size = New System.Drawing.Size(384, 31)
+        Me.txtTierName.Size = New System.Drawing.Size(384, 26)
         Me.txtTierName.TabIndex = 2
         '
-        'numMinPoints
+        'numMinNights
         '
-        Me.numMinPoints.Location = New System.Drawing.Point(420, 300)
-        Me.numMinPoints.Name = "numMinPoints"
-        Me.numMinPoints.Size = New System.Drawing.Size(180, 26)
-        Me.numMinPoints.TabIndex = 3
+        Me.numMinNights.Location = New System.Drawing.Point(420, 300)
+        Me.numMinNights.Name = "numMinNights"
+        Me.numMinNights.Size = New System.Drawing.Size(180, 26)
+        Me.numMinNights.TabIndex = 3
         '
         'btnDelete
         '
@@ -89,37 +89,21 @@ Partial Class frmLoyaltyTiers
         Me.txtBenefits.Size = New System.Drawing.Size(792, 90)
         Me.txtBenefits.TabIndex = 6
         '
-        'lblMinPoints
+        'lblMinNights
         '
-        Me.lblMinPoints.AutoSize = True
-        Me.lblMinPoints.Location = New System.Drawing.Point(420, 276)
-        Me.lblMinPoints.Name = "lblMinPoints"
-        Me.lblMinPoints.Size = New System.Drawing.Size(193, 40)
-        Me.lblMinPoints.TabIndex = 5
-        Me.lblMinPoints.Text = "Minimum Points Required:" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
-        '
-        'lblMaxPoints
-        '
-        Me.lblMaxPoints.AutoSize = True
-        Me.lblMaxPoints.Location = New System.Drawing.Point(624, 276)
-        Me.lblMaxPoints.Name = "lblMaxPoints"
-        Me.lblMaxPoints.Size = New System.Drawing.Size(307, 48)
-        Me.lblMaxPoints.TabIndex = 7
-        Me.lblMaxPoints.Text = "Maximum Points (0 for highest tier):" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
-        '
-        'numMaxPoints
-        '
-        Me.numMaxPoints.Location = New System.Drawing.Point(624, 300)
-        Me.numMaxPoints.Name = "numMaxPoints"
-        Me.numMaxPoints.Size = New System.Drawing.Size(180, 26)
-        Me.numMaxPoints.TabIndex = 8
+        Me.lblMinNights.AutoSize = True
+        Me.lblMinNights.Location = New System.Drawing.Point(394, 276)
+        Me.lblMinNights.Name = "lblMinNights"
+        Me.lblMinNights.Size = New System.Drawing.Size(207, 20)
+        Me.lblMinNights.TabIndex = 5
+        Me.lblMinNights.Text = "Minimum Nights Required:"
         '
         'lblBenefits
         '
         Me.lblBenefits.AutoSize = True
         Me.lblBenefits.Location = New System.Drawing.Point(14, 348)
         Me.lblBenefits.Name = "lblBenefits"
-        Me.lblBenefits.Size = New System.Drawing.Size(235, 48)
+        Me.lblBenefits.Size = New System.Drawing.Size(213, 40)
         Me.lblBenefits.TabIndex = 9
         Me.lblBenefits.Text = "Tier Benefits (Description):" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -141,23 +125,39 @@ Partial Class frmLoyaltyTiers
         Me.btnAddNew.Text = "Add New" & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(10)
         Me.btnAddNew.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(607, 276)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(113, 20)
+        Me.Label1.TabIndex = 12
+        Me.Label1.Text = "Discount (%):"
+        '
+        'numDiscount
+        '
+        Me.numDiscount.Location = New System.Drawing.Point(611, 299)
+        Me.numDiscount.Name = "numDiscount"
+        Me.numDiscount.Size = New System.Drawing.Size(180, 26)
+        Me.numDiscount.TabIndex = 13
+        '
         'frmLoyaltyTiers
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(818, 544)
+        Me.Controls.Add(Me.numDiscount)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtBenefits)
         Me.Controls.Add(Me.btnAddNew)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.lblBenefits)
-        Me.Controls.Add(Me.numMaxPoints)
-        Me.Controls.Add(Me.lblMaxPoints)
         Me.Controls.Add(Me.btnDelete)
-        Me.Controls.Add(Me.numMinPoints)
+        Me.Controls.Add(Me.numMinNights)
         Me.Controls.Add(Me.txtTierName)
         Me.Controls.Add(Me.lblTierName)
         Me.Controls.Add(Me.dgvTiers)
-        Me.Controls.Add(Me.lblMinPoints)
+        Me.Controls.Add(Me.lblMinNights)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -165,8 +165,8 @@ Partial Class frmLoyaltyTiers
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Loyalty Tier Management"
         CType(Me.dgvTiers, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numMinPoints, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numMaxPoints, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.numMinNights, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.numDiscount, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -175,13 +175,13 @@ Partial Class frmLoyaltyTiers
     Friend WithEvents dgvTiers As DataGridView
     Friend WithEvents lblTierName As Label
     Friend WithEvents txtTierName As TextBox
-    Friend WithEvents numMinPoints As NumericUpDown
+    Friend WithEvents numMinNights As NumericUpDown
     Friend WithEvents btnDelete As Button
     Friend WithEvents txtBenefits As TextBox
-    Friend WithEvents lblMinPoints As Label
-    Friend WithEvents lblMaxPoints As Label
-    Friend WithEvents numMaxPoints As NumericUpDown
+    Friend WithEvents lblMinNights As Label
     Friend WithEvents lblBenefits As Label
     Friend WithEvents btnSave As Button
     Friend WithEvents btnAddNew As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents numDiscount As NumericUpDown
 End Class

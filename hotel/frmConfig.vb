@@ -153,6 +153,10 @@ Public Class frmConfig
         End Try
     End Sub
 
+    Private Sub lblServer_Click(sender As Object, e As EventArgs) Handles lblServer.Click
+
+    End Sub
+
 #End Region
 
 End Class

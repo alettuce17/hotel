@@ -5,9 +5,9 @@ Public Class frmLoyaltyTiers
     Private selectedTierID As Integer = 0
 
     Private Sub frmLoyaltyTiers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Set max values for NumericUpDown controls to prevent errors
-        numMinPoints.Maximum = 1000000
-        numMaxPoints.Maximum = 1000000
+        ' Set max values for NumericUpDown controls
+        numMinNights.Maximum = 1000
+        numDiscount.Maximum = 100
 
         LoadTiers()
         ClearSelection()
@@ -17,7 +17,8 @@ Public Class frmLoyaltyTiers
     ''' Loads all loyalty tiers from the database into the DataGridView.
     ''' </summary>
     Private Sub LoadTiers()
-        Dim sql As String = "SELECT TierID, TierName, MinPointsRequired, MaxPointsRequired, TierBenefits FROM loyaltytiers ORDER BY MinPointsRequired;"
+        ' *** UPDATED SQL to use new column names ***
+        Dim sql As String = "SELECT TierID, TierName, MinNightsRequired, DiscountPercentage, TierBenefits FROM loyaltytiers ORDER BY MinNightsRequired;"
         modDB.LoadToDGV(sql, dgvTiers)
 
         dgvTiers.RowHeadersVisible = False
@@ -28,8 +29,8 @@ Public Class frmLoyaltyTiers
         If dgvTiers.Columns.Count > 0 Then
             dgvTiers.Columns("TierID").Visible = False
             dgvTiers.Columns("TierName").HeaderText = "Tier Name"
-            dgvTiers.Columns("MinPointsRequired").HeaderText = "Min Points"
-            dgvTiers.Columns("MaxPointsRequired").HeaderText = "Max Points"
+            dgvTiers.Columns("MinNightsRequired").HeaderText = "Min Nights"
+            dgvTiers.Columns("DiscountPercentage").HeaderText = "Discount %"
             dgvTiers.Columns("TierBenefits").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         End If
 
@@ -43,8 +44,8 @@ Public Class frmLoyaltyTiers
         selectedTierID = 0
         txtTierName.Clear()
         txtBenefits.Clear()
-        numMinPoints.Value = 0
-        numMaxPoints.Value = 0
+        numMinNights.Value = 0
+        numDiscount.Value = 0
         btnDelete.Enabled = False
         dgvTiers.ClearSelection()
         txtTierName.Focus()
@@ -63,15 +64,8 @@ Public Class frmLoyaltyTiers
             selectedTierID = CInt(row.Cells("TierID").Value)
             txtTierName.Text = row.Cells("TierName").Value.ToString()
             txtBenefits.Text = row.Cells("TierBenefits").Value.ToString()
-            numMinPoints.Value = CInt(row.Cells("MinPointsRequired").Value)
-
-            ' Handle potential NULL value for MaxPoints
-            If IsDBNull(row.Cells("MaxPointsRequired").Value) Then
-                numMaxPoints.Value = 0
-            Else
-                numMaxPoints.Value = CInt(row.Cells("MaxPointsRequired").Value)
-            End If
-
+            numMinNights.Value = CInt(row.Cells("MinNightsRequired").Value)
+            numDiscount.Value = CDec(row.Cells("DiscountPercentage").Value)
             btnDelete.Enabled = True
         End If
     End Sub
@@ -88,9 +82,11 @@ Public Class frmLoyaltyTiers
         Dim isUpdate As Boolean = (selectedTierID > 0)
 
         If isUpdate Then
-            sql = "UPDATE loyaltytiers SET TierName = @TierName, MinPointsRequired = @MinPoints, MaxPointsRequired = @MaxPoints, TierBenefits = @Benefits WHERE TierID = @TierID;"
+            ' *** UPDATED SQL for UPDATE statement ***
+            sql = "UPDATE loyaltytiers SET TierName = @TierName, MinNightsRequired = @MinNights, DiscountPercentage = @Discount, TierBenefits = @Benefits WHERE TierID = @TierID;"
         Else
-            sql = "INSERT INTO loyaltytiers (TierName, MinPointsRequired, MaxPointsRequired, TierBenefits) VALUES (@TierName, @MinPoints, @MaxPoints, @Benefits);"
+            ' *** UPDATED SQL for INSERT statement ***
+            sql = "INSERT INTO loyaltytiers (TierName, MinNightsRequired, DiscountPercentage, TierBenefits) VALUES (@TierName, @MinNights, @Discount, @Benefits);"
         End If
 
         Using conn As New MySqlConnection(modDB.strConnection)
@@ -98,13 +94,8 @@ Public Class frmLoyaltyTiers
                 conn.Open()
                 Using cmd As New MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@TierName", txtTierName.Text.Trim())
-                    cmd.Parameters.AddWithValue("@MinPoints", numMinPoints.Value)
-                    ' If MaxPoints is 0, save it as NULL in the database for the highest tier
-                    If numMaxPoints.Value = 0 Then
-                        cmd.Parameters.AddWithValue("@MaxPoints", DBNull.Value)
-                    Else
-                        cmd.Parameters.AddWithValue("@MaxPoints", numMaxPoints.Value)
-                    End If
+                    cmd.Parameters.AddWithValue("@MinNights", numMinNights.Value)
+                    cmd.Parameters.AddWithValue("@Discount", numDiscount.Value)
                     cmd.Parameters.AddWithValue("@Benefits", txtBenefits.Text.Trim())
 
                     If isUpdate Then

@@ -262,5 +262,89 @@ Module modDB
         End Using
         Return checkOutTime
     End Function
+    ''' <summary>
+    ''' Retrieves all hotel settings from the database.
+    ''' </summary>
+    ''' <returns>A Dictionary containing all hotel settings.</returns>
+    Public Function GetHotelDetails() As Dictionary(Of String, String)
+        Dim details As New Dictionary(Of String, String)
+        Dim sql As String = "SELECT * FROM hotelsettings WHERE SettingID = 1 LIMIT 1;"
+        If String.IsNullOrEmpty(strConnection) Then Return details
 
+        Using conn As New MySqlConnection(strConnection)
+            Try
+                conn.Open()
+                Using cmd As New MySqlCommand(sql, conn)
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            For i As Integer = 0 To reader.FieldCount - 1
+                                Dim colName As String = reader.GetName(i)
+                                Dim colValue As String = If(IsDBNull(reader(i)), "", reader(i).ToString())
+                                details(colName) = colValue
+                            Next
+                        End If
+                    End Using
+                End Using
+            Catch ex As Exception
+                ' Silently fail, returns an empty dictionary
+            End Try
+        End Using
+        Return details
+    End Function
+    Public Function GetConnectionDetails() As Dictionary(Of String, String)
+        Dim details As New Dictionary(Of String, String)
+        Dim configFile As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.txt")
+
+        If Not File.Exists(configFile) Then
+            Return details ' Return empty dictionary if file doesn't exist
+        End If
+
+        Try
+            For Each line In File.ReadLines(configFile)
+                If line.Contains("=") Then
+                    Dim parts = line.Split(New Char() {"="c}, 2)
+                    details(parts(0).Trim()) = parts(1).Trim()
+                End If
+            Next
+        Catch ex As Exception
+            ' Silently fail, returns an empty dictionary
+        End Try
+
+        Return details
+    End Function
+    ' Example of how to implement GetStatutoryDiscountPercentage in modDB (assuming it's not there)
+    Public Function GetStatutoryDiscountPercentage() As Decimal
+        Dim discount As Decimal = 0
+        Dim sql As String = "SELECT StatutoryDiscountPercentage FROM hotelsettings LIMIT 1;"
+        Using conn As New MySqlConnection(strConnection), cmd As New MySqlCommand(sql, conn)
+            Try
+                conn.Open()
+                Dim result = cmd.ExecuteScalar()
+                If result IsNot DBNull.Value Then
+                    discount = CDec(result)
+                End If
+            Catch ex As Exception
+                MsgBox($"Error loading statutory discount: {ex.Message}", MsgBoxStyle.Critical)
+            End Try
+        End Using
+        Return discount
+    End Function
+    Public Function AdminAccountExists() As Boolean
+        Dim sql As String = "SELECT COUNT(*) FROM staff WHERE RoleID = 3;"
+        Using conn As New MySqlConnection(strConnection)
+            Try
+                conn.Open()
+                Using cmd As New MySqlCommand(sql, conn)
+                    ' ExecuteScalar is efficient for getting a single value.
+                    Dim count As Long = CLng(cmd.ExecuteScalar())
+                    ' If the count is greater than 0, an admin exists.
+                    Return count > 0
+                End Using
+            Catch ex As Exception
+                ' If an error occurs (e.g., database not configured yet),
+                ' we assume no admin exists to allow the setup to proceed.
+                Return False
+            End Try
+        End Using
+    End Function
 End Module

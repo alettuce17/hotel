@@ -1,4 +1,7 @@
-﻿Public Class frmMain
+﻿Imports MySql.Data.MySqlClient
+Imports System.IO
+
+Public Class frmMain
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' --- 1. Set Dynamic Titles and Status ---
@@ -14,14 +17,16 @@
         End If
 
         ' --- 3. Load the Dashboard by Default ---
-        ShowForm(New frmDashboard())
+        ' The Dashboard is still an MDI child, as it's typically a central part of the main menu.
+        ShowMdiChildForm(New frmDashboard())
     End Sub
 
     ''' <summary>
     ''' A helper method to show a form within the MDI container, ensuring only one instance is open.
+    ''' This method is now specifically for MDI child forms.
     ''' </summary>
     ''' <param name="formToShow">An instance of the form you want to display.</param>
-    Private Sub ShowForm(ByVal formToShow As Form)
+    Private Sub ShowMdiChildForm(ByVal formToShow As Form)
         ' Check if a form of this type is already open
         For Each frm As Form In Me.MdiChildren
             If frm.GetType() = formToShow.GetType() Then
@@ -60,16 +65,13 @@
 
     ' --- Main Feature Menus ---
     Private Sub dashboardToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DashboardToolStripMenuItem.Click
-        ShowForm(New frmDashboard())
+        ShowMdiChildForm(New frmDashboard()) ' Still an MDI child
     End Sub
 
     Private Sub walkinToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WalkinToolStripMenuItem.Click
-        ShowForm(New frmWalkin())
-    End Sub
-
-    Private Sub reportsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReportsToolStripMenuItem.Click
-        ' We will create frmReports in a future step
-        MsgBox("frmReports will be created in a future step.", MsgBoxStyle.Information)
+        ' frmNewReservation should open as a separate, independent window (modal)
+        Dim frm As New frmNewReservation()
+        frm.ShowDialog() ' Use ShowDialog() for modal, independent window
     End Sub
 
     ' --- Management Menu (Admin Only) ---
@@ -92,10 +94,60 @@
     End Sub
 
     ' Note: The click events for the other management menu items will be added here as we build them.
+
     Private Sub loyaltyTiersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoyaltyTiersToolStripMenuItem.Click
         Dim frm As New frmLoyaltyTiers()
         frm.ShowDialog()
     End Sub
+    Private Sub staffToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StaffToolStripMenuItem.Click
+        Dim frm As New frmStaffManagement()
+        frm.ShowDialog()
+    End Sub
+    Private Sub guestsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GuestsToolStripMenuItem.Click
+        Dim frm As New frmGuestManagement()
+        frm.ShowDialog()
+    End Sub
+
+    Private Sub housekeepingToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HousekeepingToolStripMenuItem.Click
+        ShowMdiChildForm(New frmHousekeeping()) ' Still an MDI child
+    End Sub
+
+    Private Sub ReservationsToolStripMenuItem_Click_1(sender As Object, e As EventArgs) Handles ReservationsToolStripMenuItem.Click
+        ' CHANGE: Open frmReservationManagement as a separate, independent window (modal)
+        Dim frm As New frmReservationManagement()
+        frm.ShowDialog() ' Use ShowDialog() here
+        ' If you want it non-modal (user can interact with frmMain), use frm.Show() instead.
+        ' However, ShowDialog() is generally preferred for management forms to prevent
+        ' concurrent modifications that might cause data inconsistencies.
+    End Sub
+
+    Private Sub reportsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReportsToolStripMenuItem.Click
+        ShowMdiChildForm(New frmReports()) ' Still an MDI child
+    End Sub
+    Private Sub activityLogToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ActivityLogToolStripMenuItem.Click
+        ShowMdiChildForm(New frmActivityLog()) ' Still an MDI child
+    End Sub
 #End Region
+    Private Sub backupRestoreToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupToolStripMenuItem.Click
+        Dim frm As New frmBackupRestore()
+        frm.ShowDialog()
+    End Sub
+    Private Sub bedTypePricingToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BedTypePricingToolStripMenuItem.Click
+        Dim frm As New frmBedTypes()
+        frm.ShowDialog()
+    End Sub
+    Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        ' Optional: show message for debugging
+        ' MsgBox("Closing now...")
+
+        ' Ensure all child forms are closed
+        For Each frm As Form In Me.MdiChildren
+            frm.Close()
+        Next
+
+        ' Optionally force exit
+        Application.Exit()
+    End Sub
 
 End Class
+

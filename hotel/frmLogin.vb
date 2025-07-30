@@ -26,10 +26,39 @@ Public Class frmLogin
         Me.FormBorderStyle = FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-
+        ' REVISED LOGIC:
+        If modDB.AdminAccountExists() Then
+            ' If an admin exists, show the "Create Staff" link and hide the admin one.
+            lnkCreateAdmin.Visible = False
+            lnkCreateStaff.Visible = True
+        Else
+            ' If no admin exists, show the "Create Admin" link and hide the staff one.
+            lnkCreateAdmin.Visible = True
+            lnkCreateStaff.Visible = False
+            MsgBox("Welcome! No administrator account was found. Please click the 'Create Admin Account' link to perform the initial setup.", MsgBoxStyle.Information, "First-Time Setup")
+        End If
         ' Set the AcceptButton so pressing Enter clicks the Login button.
         Me.AcceptButton = btnLogin
     End Sub
+    ' NEW EVENT HANDLER for the new link
+    Private Sub lnkCreateStaff_Click(sender As Object, e As EventArgs) Handles lnkCreateStaff.Click
+        ' Open the same unified form. It will automatically know to create a Staff member.
+        Using frm As New frmCreateAccount()
+            frm.ShowDialog()
+        End Using
+    End Sub
+    Private Sub lnkCreateAdmin_Click(sender As Object, e As EventArgs) Handles lnkCreateAdmin.Click
+        ' Open the unified form. It will automatically know to create an Admin.
+        Using frm As New frmCreateAccount()
+            frm.ShowDialog()
+        End Using
+        ' Reload the login form to update the links' visibility.
+        frmLogin_Load(sender, e)
+    End Sub
+    ''' <summary>
+    ''' Checks if at least one staff account with an Admin role (RoleID = 1) exists.
+    ''' </summary>
+    ''' <returns>True if an admin exists, otherwise False.</returns>
 
     Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
         ' --- Input Validation ---
